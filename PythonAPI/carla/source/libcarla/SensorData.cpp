@@ -22,6 +22,7 @@
 #include <carla/sensor/data/DVSEventArray.h>
 
 #include <carla/sensor/data/RadarData.h>
+#include <carla/sensor/data/WheelOdometryEvent.h>
 
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
@@ -554,5 +555,14 @@ void export_sensor_data() {
     .def("to_array_t", CALL_RETURNING_LIST(csd::DVSEventArray, ToArrayT))
     .def("to_array_pol", CALL_RETURNING_LIST(csd::DVSEventArray, ToArrayPol))
     .def(self_ns::str(self_ns::self))
+  ;
+
+
+  class_<csd::WheelOdometryEvent, bases<cs::SensorData>, boost::noncopyable, boost::shared_ptr<csd::WheelOdometryEvent> >("WheelOdometryEvent", no_init)
+    .def("__len__", &csd::WheelOdometryEvent::size)
+    .def("__iter__", iterator<csd::WheelOdometryEvent>())
+    .def("__getitem__", +[](const csd::WheelOdometryEvent& self, size_t pos) -> int {
+      return self.at(pos);
+    })
   ;
 }
